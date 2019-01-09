@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense } from "react";
+import { Route, Switch } from "react-router-dom";
 
-class App extends Component {
+const GridComponent = lazy(() => import('./grid-component'));
+
+const AnotherRoute = () => (
+  <div>
+    Another <a href="/a">route</a>
+  </div>
+);
+
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <Suspense fallback={<div>{console.log("loading")}Loading...</div>}>
+          <Switch>
+            <Route exact path="/" component={AnotherRoute} />
+            <Route exact path="/a" component={GridComponent} />
+          </Switch>
+        </Suspense>
       </div>
     );
   }
